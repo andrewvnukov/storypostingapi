@@ -12,5 +12,6 @@ services:
       # rebuilds; nothing the app writes lives inside the image.
       - ./data:/data
     ports:
-      # Bound to loopback: nginx terminates TLS and proxies to it.
-      - "127.0.0.1:3000:3000"
+      # Bound to loopback: the reverse proxy terminates TLS and forwards to it.
+      # APP_PORT moves the host side when 3000 is already taken on this machine.
+      - "127.0.0.1:${APP_PORT:-3000}:3000"
