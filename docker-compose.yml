@@ -1,0 +1,17 @@
+services:
+  app:
+    build: ./app
+    restart: unless-stopped
+    env_file: ./app/.env
+    environment:
+      DATA_DIR: /data
+      TRUST_PROXY: "1"
+      COOKIE_SECURE: "1"
+    volumes:
+      # The database, the rendered videos and your background clips survive
+      # rebuilds; nothing the app writes lives inside the image.
+      - ./data:/data
+    ports:
+      # Bound to loopback: the reverse proxy terminates TLS and forwards to it.
+      # APP_PORT moves the host side when 3000 is already taken on this machine.
+      - "127.0.0.1:${APP_PORT:-3000}:3000"
