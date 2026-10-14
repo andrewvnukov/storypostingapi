@@ -21,18 +21,10 @@
 
 ### Описание (Description)
 
+973 символа.
+
 ```
-StoryPostingApi is a web app for creators who make narrated story videos. The user pastes a link
-to a public Reddit post (or their own text), picks a background clip, a narration voice, a
-speaking speed and a caption style, and the app renders a 1080x1920 video with burned-in captions
-and an opening headline card. The user previews the video in the browser, writes the caption, and
-publishes it to their own TikTok account through the Content Posting API — immediately or at a
-scheduled time. Before each post the app queries the Creator Info endpoint and shows the account
-nickname, the privacy options the account allows, the comment/duet/stitch settings and the maximum
-video duration, plus the commercial-content disclosure switches; videos with a synthetic voice are
-marked as AI-generated content. The app also shows the view, like, comment and share counts of the
-connected account's own videos so the creator can see how the published stories performed. Nothing
-is published without an explicit action by the user.
+StoryPostingApi is a web app for creators who make narrated story videos. The user pastes a link to a public Reddit post (or their own text), picks a background clip, a narration voice, a speaking speed and a caption style, and the app renders a 1080x1920 video with burned-in captions and an opening headline card. The user previews the video in the browser, writes the caption and publishes it to their own TikTok account through the Content Posting API, immediately or at a scheduled time. Before each post the app queries the Creator Info endpoint and shows the account nickname, the privacy options the account allows, the comment/duet/stitch settings and the maximum video duration, plus the commercial content disclosure switches; videos with a synthetic voice are marked as AI-generated content. The account page also shows the view, like, comment and share counts of the connected account's own videos. Nothing is published without an explicit action by the user.
 ```
 
 ---
@@ -41,7 +33,8 @@ is published without an explicit action by the user.
 
 Добавить:
 - **Login Kit** — вход пользователя и получение access/refresh токена.
-- **Content Posting API** — публикация.
+- **Content Posting API** — публикация (Direct Post и черновики).
+- **Display API** — экран аккаунта: профиль, статистика, список своих видео.
 
 ## 3. Области применения (Scopes)
 
@@ -63,31 +56,15 @@ is published without an explicit action by the user.
 
 ## 4. «Необходимая информация для отправки приложения» (поле на 1000 символов)
 
+Блок ниже — 983 символа, влезает без правок. Если дописываете что-то своё — сначала уберите
+столько же, иначе портал обрежет текст на середине предложения.
+
 ```
-Login Kit: the user clicks "Connect TikTok", is sent to the TikTok authorization page and grants the
-requested scopes. Tokens are stored encrypted and refreshed automatically; the connected account's
-nickname and avatar are shown in the app so the user always sees where a post will go.
+Login Kit: the user clicks "Connect TikTok", grants the scopes on TikTok's page, and the app then shows the connected nickname and avatar.
 
-Display API: the account page shows the connected account's own profile and stats (user.info.profile,
-user.info.stats) and the view/like/comment/share counts of its recent videos (video.list). Only the
-authorized account is read.
+Display API: the account page shows that account's own profile, stats and the view/like counts of its own recent videos only.
 
-Story studio: the user pastes a public Reddit post link, the app loads the post text, and the user
-edits it, picks a background clip, a voice, a speaking speed and a caption style. The app renders a
-1080x1920 video and plays it back for review.
-
-Content Posting API: on the preview screen the app calls /v2/post/publish/creator_info/query/ and
-renders the returned data — nickname, allowed privacy levels, comment/duet/stitch toggles with the
-disabled ones greyed out, and the maximum video duration, which is compared against the rendered
-video. No privacy level is preselected and the Publish button stays disabled until the user picks
-one. Turning on content disclosure reveals "Your brand" and "Branded content"; Branded content is
-blocked with the private level, and the Music Usage Confirmation link is shown. The AI-generated
-content flag is set by default because the narration is a synthetic voice.
-
-Direct Post (video.publish) sends the video to /v2/post/publish/video/init/ and uploads it in chunks;
-"Send to drafts" (video.upload) uses /v2/post/publish/inbox/video/init/. The app then polls
-/v2/post/publish/status/fetch/ until PUBLISH_COMPLETE and links the published post. Scheduled posts
-run through the same calls at the chosen time. The demo video shows this full cycle in the sandbox.
+Content Posting API: the user pastes a public Reddit link, edits the text, picks a background, a voice and a caption style, and the app renders a 1080x1920 video with burned-in captions. The preview screen calls creator_info/query and renders the result: nickname, allowed privacy levels with none preselected, comment/duet/stitch toggles with disabled ones greyed out, and the max duration, checked against the video. Disclosure reveals Your brand / Branded content, blocked with the private level, and the Music Usage Confirmation link. AI-generated content is on by default (synthetic voice). Publish calls video/init (inbox/video/init for drafts), uploads in chunks and polls status/fetch until PUBLISH_COMPLETE.
 ```
 
 ---
@@ -140,9 +117,9 @@ run through the same calls at the chosen time. The demo video shows this full cy
 - [ ] Terms URL и Privacy URL открываются публично и отдают 200
 - [ ] Домен подтверждён в **URL properties** (все три verification-строки на месте)
 - [ ] Платформа: Web
-- [ ] Продукты: Login Kit + Content Posting API
+- [ ] Продукты: Login Kit + Content Posting API + Display API
 - [ ] Scopes: только используемые
 - [ ] Видео помечается как AI-generated (синтетический голос) — галка включена по умолчанию
 - [ ] Фоновые клипы, которые вы показываете в демо, принадлежат вам
-- [ ] Демо-видео со всеми 7 шагами загружено
+- [ ] Демо-видео со всеми 9 шагами загружено
 - [ ] Redirect URI в настройках приложения совпадает с тем, что реально использует код
