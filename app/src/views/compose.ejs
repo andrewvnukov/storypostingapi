@@ -1,0 +1,39 @@
+<%- include('header', { title: 'Upload a file — StoryPostingApi' }) %>
+<h1>Publish a ready video file</h1>
+<p class="hint">Already have the video? Upload it here. To build one from a Reddit story,
+use <a href="/story">Story studio</a>.</p>
+
+<div class="card row">
+  <img class="avatar" src="<%= creator.creator_avatar_url || '' %>" alt="">
+  <div class="grow">
+    <strong><%= creator.creator_nickname %></strong>
+    <div class="hint">@<%= creator.creator_username %> &middot; max video length
+      <%= creator.max_video_post_duration_sec %> s</div>
+  </div>
+</div>
+
+<form method="post" action="/compose" enctype="multipart/form-data" id="composer">
+  <input type="hidden" name="account" value="<%= openId %>">
+
+  <label for="account-switch">Account</label>
+  <select id="account-switch" onchange="location.href='/compose?account='+this.value">
+    <% accounts.forEach(function (a) { %>
+      <option value="<%= a.open_id %>" <%= a.open_id === openId ? 'selected' : '' %>>
+        <%= a.display_name || a.open_id %>
+      </option>
+    <% }) %>
+  </select>
+
+  <label for="video">Video file</label>
+  <input type="file" id="video" name="video" accept="video/mp4,video/quicktime,video/webm" required>
+
+  <label for="title">Caption</label>
+  <textarea id="title" name="title" maxlength="2200" placeholder="Write the caption, #hashtags and @mentions"></textarea>
+
+  <%- include('publish_options', { creator }) %>
+
+  <p><button class="btn" type="submit" id="submit" disabled>Schedule post</button></p>
+</form>
+
+<script src="/compose.js"></script>
+<%- include('footer') %>

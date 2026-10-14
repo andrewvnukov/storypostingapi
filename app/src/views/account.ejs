@@ -1,0 +1,38 @@
+<%- include('header', { title: (account.display_name || 'Account') + ' — StoryPostingApi' }) %>
+<div class="card row">
+  <img class="avatar" src="<%= user.avatar_url || '' %>" alt="">
+  <div class="grow">
+    <h1 style="margin:0"><%= user.display_name %></h1>
+    <div class="stats">
+      <span><b><%= user.follower_count ?? '—' %></b>followers</span>
+      <span><b><%= user.likes_count ?? '—' %></b>likes</span>
+      <span><b><%= user.video_count ?? '—' %></b>videos</span>
+    </div>
+  </div>
+  <a class="btn" href="/compose?account=<%= account.open_id %>">Schedule a post</a>
+</div>
+
+<h2>Recent videos</h2>
+<% if (!videos.length) { %>
+  <p class="hint">No videos returned. This account may have none yet, or the video.list permission was not granted.</p>
+<% } else { %>
+  <div class="videos">
+    <% videos.forEach(function (v) { %>
+      <div>
+        <a href="<%= v.share_url %>" target="_blank" rel="noopener">
+          <img src="<%= v.cover_image_url %>" alt="">
+        </a>
+        <small>
+          <%= v.view_count ?? 0 %> views &middot; <%= v.like_count ?? 0 %> likes<br>
+          <%= v.comment_count ?? 0 %> comments &middot; <%= v.share_count ?? 0 %> shares
+        </small>
+      </div>
+    <% }) %>
+  </div>
+<% } %>
+
+<div class="notice">
+  Statistics come from the TikTok Display API for this authorized account only. The official API has no
+  endpoint for reading other people's channels, so the app does not track accounts it is not connected to.
+</div>
+<%- include('footer') %>

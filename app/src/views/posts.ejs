@@ -1,0 +1,24 @@
+<%- include('header', { title: 'Scheduled posts — StoryPostingApi' }) %>
+<h1>Scheduled posts</h1>
+<% if (!posts.length) { %>
+  <p class="hint">Nothing scheduled yet. <a href="/compose">Create a post</a>.</p>
+<% } else { %>
+<table>
+  <tr><th>When</th><th>Account</th><th>Caption</th><th>Visibility</th><th>Status</th></tr>
+  <% posts.forEach(function (p) { %>
+    <tr>
+      <td><%= new Date(p.run_at).toLocaleString() %></td>
+      <td><%= p.display_name || p.open_id %></td>
+      <td><%= (p.title || '').slice(0, 60) %><% if (p.mode === 'draft') { %><br><small class="hint">to drafts</small><% } %></td>
+      <td><%= p.privacy_level || '—' %></td>
+      <td>
+        <span class="badge <%= p.status %>"><%= p.status %></span>
+        <% if (p.tiktok_status) { %><br><small class="hint"><%= p.tiktok_status %></small><% } %>
+        <% if (p.post_url) { %><br><a href="<%= p.post_url %>" target="_blank" rel="noopener">View on TikTok</a><% } %>
+        <% if (p.error) { %><br><small class="hint"><%= p.error %></small><% } %>
+      </td>
+    </tr>
+  <% }) %>
+</table>
+<% } %>
+<%- include('footer') %>
