@@ -3,7 +3,23 @@
 Готовые тексты для формы `developers.tiktok.com/app/7696178130269063188`.
 Английские блоки — копировать как есть, русский текст — пояснения.
 
-Базовый URL сайта (GitHub Pages): `https://andrewvnukov.github.io/content-farm-legal/`
+---
+
+## 0. Сначала переименуйте репозиторий
+
+Сайт на GitHub Pages живёт по адресу `https://<user>.github.io/<repo>/`, то есть имя репозитория
+видно ревьюеру в адресной строке, в заявке и в демо-видео. `content-farm-legal` в этой роли —
+прямая заявка на отказ. Переименуйте репозиторий в `storypostingapi` (Settings → General →
+Repository name → Rename), после чего базовый URL станет:
+
+`https://andrewvnukov.github.io/storypostingapi/`
+
+GitHub оставит редирект со старого адреса, относительные ссылки на страницах не сломаются.
+Но URL property в портале TikTok привязан к конкретному адресу: после переименования добавьте
+новый URL в **URL properties**, возьмите новый verification-токен и положите его в `index.html`
+рядом с теми тремя, что уже там (старые не удаляйте, пока новый не подтвердится).
+
+Дальше в этом файле URL написаны уже с новым именем.
 
 ---
 
@@ -13,19 +29,32 @@
 |---|---|
 | Название приложения | `StoryPostingApi` (в портале сейчас опечатка — **Stoty**, исправить) |
 | Категория | **Productivity** (запасной вариант — Business / Social) |
-| Website URL | `https://andrewvnukov.github.io/content-farm-legal/` |
-| Условия использования URL | `https://andrewvnukov.github.io/content-farm-legal/terms.html` |
-| URL политики конфиденциальности | `https://andrewvnukov.github.io/content-farm-legal/privacy.html` |
+| Website URL | `https://andrewvnukov.github.io/storypostingapi/` |
+| Условия использования URL | `https://andrewvnukov.github.io/storypostingapi/terms.html` |
+| URL политики конфиденциальности | `https://andrewvnukov.github.io/storypostingapi/privacy.html` |
 | Платформы | **Web** (только то, что реально показано в демо-видео) |
 | Иконка | 1024×1024 PNG/JPG, без логотипа TikTok и без слова «TikTok» в самой иконке |
 
-### Описание (Description)
+### Описание (Description) — максимум 120 символов
 
-973 символа.
+Полная версия тут не нужна: вся история про API идёт в поле на 1000 символов (раздел 4).
+Здесь нужна одна строка. Основной вариант — 101 символ:
 
 ```
-StoryPostingApi is a web app for creators who make narrated story videos. The user pastes a link to a public Reddit post (or their own text), picks a background clip, a narration voice, a speaking speed and a caption style, and the app renders a 1080x1920 video with burned-in captions and an opening headline card. The user previews the video in the browser, writes the caption and publishes it to their own TikTok account through the Content Posting API, immediately or at a scheduled time. Before each post the app queries the Creator Info endpoint and shows the account nickname, the privacy options the account allows, the comment/duet/stitch settings and the maximum video duration, plus the commercial content disclosure switches; videos with a synthetic voice are marked as AI-generated content. The account page also shows the view, like, comment and share counts of the connected account's own videos. Nothing is published without an explicit action by the user.
+Turn a Reddit story into a captioned vertical video and post it to your TikTok, now or on a schedule.
 ```
+
+Запасные, если захочется другой акцент:
+
+```
+Turns Reddit stories into captioned 1080x1920 videos and posts them to your TikTok now or on a schedule.
+```
+```
+Make captioned vertical story videos from Reddit posts and publish them to your own TikTok on a schedule.
+```
+
+Не вписывайте сюда слова вроде automation, bulk, mass или farm — на этом поле ревью спотыкается
+чаще всего.
 
 ---
 
@@ -113,7 +142,8 @@ Content Posting API: the user pastes a public Reddit link, edits the text, picks
 - [ ] Опечатка в названии исправлена (`StoryPostingApi`)
 - [ ] Иконка 1024×1024 загружена
 - [ ] Категория выбрана
-- [ ] Описание заполнено
+- [ ] Описание влезает в 120 символов
+- [ ] Репозиторий переименован, базовый URL больше не содержит `content-farm-legal`
 - [ ] Terms URL и Privacy URL открываются публично и отдают 200
 - [ ] Домен подтверждён в **URL properties** (все три verification-строки на месте)
 - [ ] Платформа: Web
