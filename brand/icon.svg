@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-label="StoryPostingApi">
+  <title>StoryPostingApi</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4f46e5"/>
+      <stop offset="1" stop-color="#9333ea"/>
+    </linearGradient>
+    <linearGradient id="play" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4f46e5"/>
+      <stop offset="1" stop-color="#9333ea"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+
+  <!-- the story: a speech bubble -->
+  <path fill="#ffffff"
+        d="M272 140h480a132 132 0 0 1 132 132v206a132 132 0 0 1-132 132H470l-128 115a16 16 0 0 1-27-12v-103h-43a132 132 0 0 1-132-132V272a132 132 0 0 1 132-132z"/>
+
+  <!-- the video: a play mark inside it -->
+  <path fill="url(#play)" stroke="url(#play)" stroke-width="28" stroke-linejoin="round"
+        d="M455 296l164 79-164 79z" transform="translate(0 0) scale(1)"/>
+
+  <!-- the captions -->
+  <rect x="252" y="772" width="520" height="58" rx="29" fill="#facc15"/>
+  <rect x="332" y="866" width="360" height="58" rx="29" fill="#fde68a"/>
+</svg>
