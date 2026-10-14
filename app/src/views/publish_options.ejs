@@ -1,0 +1,67 @@
+<%
+  const privacyLabels = {
+    PUBLIC_TO_EVERYONE: 'Everyone',
+    MUTUAL_FOLLOW_FRIENDS: 'Friends',
+    FOLLOWER_OF_CREATOR: 'Followers',
+    SELF_ONLY: 'Only you (private)'
+  };
+%>
+<label>How to publish</label>
+<label class="check"><input type="radio" name="mode" value="direct" checked> Post directly to TikTok</label>
+<label class="check"><input type="radio" name="mode" value="draft"> Send to my TikTok drafts</label>
+
+<div id="direct-options">
+  <label>Who can view this video</label>
+  <% (creator.privacy_level_options || []).forEach(function (level) { %>
+    <label class="check">
+      <input type="radio" name="privacy_level" value="<%= level %>" data-privacy>
+      <%= privacyLabels[level] || level %>
+    </label>
+  <% }) %>
+  <p class="hint">Nothing is preselected — choose the visibility yourself.</p>
+
+  <label>Allow users to</label>
+  <label class="check <%= creator.comment_disabled ? 'disabled' : '' %>">
+    <input type="checkbox" name="allow_comment" checked <%= creator.comment_disabled ? 'disabled' : '' %>> Comment
+  </label>
+  <label class="check <%= creator.duet_disabled ? 'disabled' : '' %>">
+    <input type="checkbox" name="allow_duet" checked <%= creator.duet_disabled ? 'disabled' : '' %>> Duet
+  </label>
+  <label class="check <%= creator.stitch_disabled ? 'disabled' : '' %>">
+    <input type="checkbox" name="allow_stitch" checked <%= creator.stitch_disabled ? 'disabled' : '' %>> Stitch
+  </label>
+  <% if (creator.comment_disabled || creator.duet_disabled || creator.stitch_disabled) { %>
+    <p class="hint">Greyed-out options are switched off in this account's TikTok privacy settings.</p>
+  <% } %>
+
+  <input type="hidden" name="disable_comment" id="disable_comment">
+  <input type="hidden" name="disable_duet" id="disable_duet">
+  <input type="hidden" name="disable_stitch" id="disable_stitch">
+
+  <label class="check"><input type="checkbox" id="disclose" name="disclose"> Disclose video content</label>
+  <p class="hint">Turn this on if the video promotes a brand, a product or a service.</p>
+
+  <div id="disclosure" hidden>
+    <label class="check"><input type="checkbox" name="brand_organic" id="brand_organic"> Your brand — promotes yourself or your own business</label>
+    <label class="check"><input type="checkbox" name="brand_content" id="brand_content"> Branded content — a paid partnership with another brand</label>
+    <p class="hint" id="branded-warning" hidden>Branded content cannot be posted with the <em>Only you</em> visibility setting.</p>
+  </div>
+
+  <label class="check">
+    <input type="checkbox" name="is_aigc" <%= typeof aigcDefault !== 'undefined' && aigcDefault ? 'checked' : '' %>>
+    This content is AI-generated
+  </label>
+  <% if (typeof aigcDefault !== 'undefined' && aigcDefault) { %>
+    <p class="hint">Pre-ticked because the narration is a synthetic voice.</p>
+  <% } %>
+</div>
+
+<label for="run_at">Publish at</label>
+<input type="datetime-local" id="run_at" name="run_at">
+<p class="hint">Leave empty to publish as soon as the queue picks it up (within a minute).</p>
+
+<p class="consent">
+  By posting, you agree to TikTok's
+  <a href="https://www.tiktok.com/legal/page/global/music-usage-confirmation/en" target="_blank" rel="noopener">Music Usage Confirmation</a><span id="consent-branded" hidden>
+  and <a href="https://www.tiktok.com/legal/page/global/bc-policy/en" target="_blank" rel="noopener">Branded Content Policy</a></span>.
+</p>

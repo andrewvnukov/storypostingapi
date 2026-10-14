@@ -1,0 +1,43 @@
+<%- include('header', { title: 'Preview — StoryPostingApi' }) %>
+<h1>Preview and publish</h1>
+
+<div class="card row" style="align-items:flex-start">
+  <video src="/story/<%= render.id %>/file" controls playsinline
+         style="width:260px;aspect-ratio:9/16;border-radius:12px;background:#000"></video>
+  <div class="grow">
+    <strong><%= render.headline || 'Untitled story' %></strong>
+    <p class="hint">
+      <%= render.duration.toFixed(0) %> s &middot; <%= (render.file_size / 1048576).toFixed(1) %> MB
+      &middot; background <%= render.background %> &middot; voice <%= render.voice %>
+    </p>
+    <% if (render.source_url) { %>
+      <p class="hint">Source: <a href="<%= render.source_url %>" target="_blank" rel="noopener"><%= render.source_url %></a></p>
+    <% } %>
+    <p><a class="btn secondary" href="/story">Make another</a></p>
+  </div>
+</div>
+
+<% if (tooLong) { %>
+  <div class="notice">This video is longer than the <%= creator.max_video_post_duration_sec %> s
+    this account is allowed to post. Shorten the story and render it again.</div>
+<% } %>
+
+<div class="card row">
+  <img class="avatar" src="<%= creator.creator_avatar_url || '' %>" alt="">
+  <div class="grow">
+    <strong><%= creator.creator_nickname %></strong>
+    <div class="hint">@<%= creator.creator_username %></div>
+  </div>
+</div>
+
+<form method="post" action="/story/<%= render.id %>/publish" id="composer">
+  <label for="title">Caption</label>
+  <textarea id="title" name="title" maxlength="2200"><%= render.headline %></textarea>
+
+  <%- include('publish_options', { creator, aigcDefault: true }) %>
+
+  <p><button class="btn" type="submit" id="submit" disabled <%= tooLong ? 'disabled' : '' %>>Publish</button></p>
+</form>
+
+<script src="/compose.js"></script>
+<%- include('footer') %>

@@ -1,0 +1,95 @@
+<%- include('header', { title: 'Story studio — StoryPostingApi' }) %>
+<h1>Story studio</h1>
+<p class="hint">Turn a Reddit story into a vertical video: pick the background, the voice and the
+caption style, preview the result, then post it now or at a chosen time.</p>
+
+<form method="post" action="/story/render" id="studio">
+  <label for="account-switch">Post to</label>
+  <select id="account-switch" name="account" onchange="location.href='/story?account='+this.value">
+    <% accounts.forEach(function (a) { %>
+      <option value="<%= a.open_id %>" <%= a.open_id === openId ? 'selected' : '' %>><%= a.display_name || a.open_id %></option>
+    <% }) %>
+  </select>
+
+  <h2>1. The story</h2>
+  <label for="source_url">Reddit post link</label>
+  <div class="row">
+    <input class="grow" type="text" id="source_url" name="source_url" placeholder="https://www.reddit.com/r/AskReddit/comments/...">
+    <button class="btn secondary" type="button" id="fetch">Load story</button>
+  </div>
+  <p class="hint" id="fetch-status">Or just paste your own text below — a link is not required.</p>
+
+  <label for="headline">Headline (shown as the opening card)</label>
+  <input type="text" id="headline" name="headline" maxlength="200">
+
+  <label for="narration">Story text to narrate</label>
+  <textarea id="narration" name="narration" required placeholder="Paste or edit the text that will be read aloud"></textarea>
+  <p class="hint"><span id="chars">0</span> characters &middot; roughly <span id="estimate">0</span> s of narration</p>
+
+  <h2>2. The video</h2>
+  <label for="background">Background clip</label>
+  <% if (!backgrounds.length) { %>
+    <p class="hint">No background clips yet. Upload one below — gameplay, satisfying loops, anything you
+      have the rights to use.</p>
+  <% } else { %>
+    <select id="background" name="background">
+      <% backgrounds.forEach(function (b) { %><option value="<%= b %>"><%= b %></option><% }) %>
+    </select>
+    <p class="hint">A random section of the clip is used, so two renders of the same background differ.</p>
+  <% } %>
+
+  <label for="voice">Voice</label>
+  <select id="voice" name="voice">
+    <% voices.forEach(function (v) { %><option value="<%= v %>"><%= v %></option><% }) %>
+  </select>
+
+  <label for="speed">Speaking speed</label>
+  <select id="speed" name="speed">
+    <option value="0.9">Slow (0.9x)</option>
+    <option value="1.0" selected>Normal (1.0x)</option>
+    <option value="1.15">Fast (1.15x)</option>
+    <option value="1.3">Very fast (1.3x)</option>
+  </select>
+
+  <label for="style">Caption style</label>
+  <select id="style" name="style">
+    <% styles.forEach(function (s) { %><option value="<%= s %>"><%= s.replace('_', ' ') %></option><% }) %>
+    <option value="none">No captions</option>
+  </select>
+
+  <label for="words_per_cue">Words shown at a time</label>
+  <select id="words_per_cue" name="words_per_cue">
+    <option value="2">2</option><option value="3">3</option>
+    <option value="4" selected>4</option><option value="6">6</option>
+  </select>
+
+  <label class="check"><input type="checkbox" name="title_card" checked> Show the headline as an opening card</label>
+
+  <p><button class="btn" type="submit" id="render">Generate video</button></p>
+  <p class="hint" id="render-status" hidden>Rendering — speech synthesis and encoding take a moment.</p>
+</form>
+
+<h2>Background clips</h2>
+<form method="post" action="/backgrounds" enctype="multipart/form-data" class="row">
+  <input type="file" name="background" accept="video/*" required>
+  <button class="btn secondary" type="submit">Upload background</button>
+</form>
+<p class="hint">Only upload footage you have the rights to publish.</p>
+
+<% if (recent.length) { %>
+  <h2>Recent renders</h2>
+  <table>
+    <tr><th>Made</th><th>Headline</th><th>Length</th><th></th></tr>
+    <% recent.forEach(function (r) { %>
+      <tr>
+        <td><%= new Date(r.created_at).toLocaleString() %></td>
+        <td><%= (r.headline || r.narration).slice(0, 60) %></td>
+        <td><%= r.duration.toFixed(0) %> s</td>
+        <td><a href="/story/<%= r.id %>">Open</a></td>
+      </tr>
+    <% }) %>
+  </table>
+<% } %>
+
+<script src="/story.js"></script>
+<%- include('footer') %>

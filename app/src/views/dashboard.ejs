@@ -1,0 +1,32 @@
+<%- include('header', { title: 'Accounts — StoryPostingApi' }) %>
+<h1>Connected TikTok accounts</h1>
+<p class="hint">Connect an account to see its videos and schedule posts to it.</p>
+
+<% if (!accounts.length) { %>
+  <div class="card">
+    <p>No account is connected yet.</p>
+    <a class="btn" href="/auth/login">Connect TikTok</a>
+  </div>
+<% } else { %>
+  <% accounts.forEach(function (a) { %>
+    <div class="card row">
+      <img class="avatar" src="<%= a.avatar_url || '' %>" alt="">
+      <div class="grow">
+        <strong><%= a.display_name || a.open_id %></strong>
+        <div class="hint">Permissions: <%= a.scopes %></div>
+      </div>
+      <a class="btn secondary" href="/accounts/<%= a.open_id %>">Open</a>
+      <a class="btn" href="/compose?account=<%= a.open_id %>">Schedule a post</a>
+      <form method="post" action="/accounts/<%= a.open_id %>/disconnect">
+        <button class="btn link" type="submit">Disconnect</button>
+      </form>
+    </div>
+  <% }) %>
+  <p><a class="btn secondary" href="/auth/login">Connect another account</a></p>
+<% } %>
+
+<div class="notice">
+  Disconnecting removes the stored tokens here. To revoke the permission on TikTok's side,
+  open TikTok &rarr; Settings and privacy &rarr; Security &amp; permissions &rarr; Manage app permissions.
+</div>
+<%- include('footer') %>

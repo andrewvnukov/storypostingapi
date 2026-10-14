@@ -1,0 +1,22 @@
+{
+  "name": "storypostingapi",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Web app to monitor your connected TikTok accounts and publish videos on a schedule via the official TikTok Content Posting API.",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "better-sqlite3": "^11.10.0",
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "multer": "^2.0.1",
+    "node-cron": "^3.0.3"
+  }
+}
