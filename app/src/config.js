@@ -36,6 +36,10 @@ export const config = {
   dbFile: path.join(dataDir, 'data.db'),
   // Set both behind a TLS terminator such as nginx, so the session cookie is
   // marked secure and req.protocol reflects the original request.
+  // Always show TikTok's authorization page instead of letting it auto-approve
+  // a grant the account already gave. Set to 0 once the app is audited if you
+  // would rather returning users skip it.
+  disableAutoAuth: process.env.TIKTOK_DISABLE_AUTO_AUTH !== '0',
   trustProxy: process.env.TRUST_PROXY === '1',
   cookieSecure: process.env.COOKIE_SECURE === '1',
 };

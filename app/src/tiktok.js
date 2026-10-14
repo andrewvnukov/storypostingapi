@@ -22,6 +22,10 @@ export function buildAuthUrl() {
   url.searchParams.set('state', state);
   url.searchParams.set('code_challenge', codeChallenge);
   url.searchParams.set('code_challenge_method', 'S256');
+  // With a live TikTok session and a grant already given, TikTok skips the
+  // authorization page and comes straight back. The demo video for app review
+  // has to show that page, so ask for it every time.
+  if (config.disableAutoAuth) url.searchParams.set('disable_auto_auth', '1');
 
   return { url: url.toString(), state, codeVerifier };
 }
