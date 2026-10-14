@@ -14,7 +14,7 @@ import { renderVideo, listBackgrounds, SUBTITLE_STYLES } from './story/video.js'
 
 export const storyRouter = express.Router();
 
-const backgroundsDir = path.join(config.root, 'assets/backgrounds');
+const backgroundsDir = config.backgroundsDir;
 const jobsDir = path.join(config.uploadDir, 'jobs');
 fs.mkdirSync(backgroundsDir, { recursive: true });
 fs.mkdirSync(jobsDir, { recursive: true });

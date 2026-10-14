@@ -8,6 +8,8 @@ import { startScheduler } from './scheduler.js';
 
 const app = express();
 
+if (config.trustProxy) app.set('trust proxy', 1);
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(config.root, 'src/views'));
 
@@ -17,7 +19,12 @@ app.use(session({
   secret: config.sessionSecret,
   resave: false,
   saveUninitialized: false,
-  cookie: { httpOnly: true, sameSite: 'lax', maxAge: 7 * 24 * 60 * 60 * 1000 },
+  cookie: {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: config.cookieSecure,
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  },
 }));
 
 app.use(storyRouter);
